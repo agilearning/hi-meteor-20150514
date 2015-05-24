@@ -1,3 +1,7 @@
+Router.route('/hello', function () {
+  this.render('guestbook');
+});
+
 Message = new Mongo.Collection("message");
 
 

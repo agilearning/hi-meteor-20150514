@@ -3,7 +3,7 @@ Message = new Mongo.Collection("message");
 
 if (Meteor.isClient){
   Meteor.startup(function(){
-    Meteor.subscribe("pubMsgs")
+    Meteor.subscribe("pubMsgs",20);
   });
 
   Template.guestbook.helpers({
@@ -31,8 +31,8 @@ if (Meteor.isClient){
 
 
 if (Meteor.isServer){
-  Meteor.publish("pubMsgs",function(){
-    return(Message.find({},{sort:{createdAt:-1},limit:10}))
+  Meteor.publish("pubMsgs",function(limitN){
+    return(Message.find({},{sort:{createdAt:-1},limit:limitN}))
   })
 
   Meteor.methods({

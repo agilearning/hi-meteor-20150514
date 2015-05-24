@@ -8,9 +8,23 @@
  -->
 
 
+<template name="layout">
+  {{> topNav}}
+  {{> yield}}
+</template>
+
+
+
+
+<template name="topNav">
+  <p>(I am top Nav)</p>
+  {{> loginButtons}}
+</template>
+
+
 
 <template name="home">
-  {{> loginButtons}}
+  {{> topNav}}
   <hr>
     <!-- User:<input id="inputUsr" /> -->
     <!-- <br> -->
@@ -24,7 +38,7 @@
 </template>
 
 <template name="chatroomPage">
-  {{> loginButtons}}
+  {{> topNav}}
   <!-- <h2>{{chatroomData}}</h2> -->
   <a href="{{pathFor 'index'}}">Home</a>
   {{> Template.dynamic template="chatroom" data=chatroomData}}

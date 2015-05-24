@@ -6,11 +6,12 @@
   <h2>{{testArray}}</h2>
 
   {{# each Msgs}}
-    <hr>
+    <!-- <hr>
     <h2>Text:{{this.n}}</h2>
     <hr>
+ -->
 
-    <!-- {{> message text=this}} -->
+    {{> message number=this.n text=this.text}}
 
   {{/each}}
 

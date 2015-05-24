@@ -11,33 +11,33 @@ if (Meteor.isClient){
   Template.guestbook.events({
     "change #inputMsg": function(e,t){
       msg = $(e.target).val();
-      // usr = $("#inputUsr").val();
-
-      // if (!usr){
-      //   usr = "Annonymous";
-      // }
-
 
       $("input").val("");
       msgData = {
         text:msg,
-        createdAt: new Date,
       };
 
-      usr = Meteor.userId()
-      if (usr){
-        msgData.userId = usr;
-        msgData.user = Meteor.user().profile.name;
-        Message.insert(msgData);
-
-      }
-
-      // Message.insert(msgData);
-
+      Meteor.call("createMessage",msgData)
 
     }
   })
 
 
+}
+
+
+if (Meteor.isServer){
+  Meteor.methods({
+    createMessage: function(msgData){
+      usr = Meteor.userId()
+      if (usr){
+        msgData.userId = usr;
+        msgData.user = Meteor.user().profile.name;
+        msgData.createdAt = new Date;
+        Message.insert(msgData);
+
+      }
+    }
+  })
 }
 

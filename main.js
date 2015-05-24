@@ -27,6 +27,10 @@ if (Meteor.isClient){
 
 
 if (Meteor.isServer){
+  Meteor.publish(null,function(){
+    return(Message.find({},{sort:{createdAt:-1},limit:10}))
+  })
+
   Meteor.methods({
     createMessage: function(msgData){
       usr = Meteor.userId()

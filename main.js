@@ -1,8 +1,49 @@
-Router.route('/hello', function () {
-  this.render('guestbook');
-});
+// Router.route('/', function () {
+//   this.render('home');
+// });
+
+// Router.route('/hello', function () {
+//   this.render('guestbook');
+// });
+
+
+
+Router.map(function(){
+  this.route("index",{
+    path:'/',
+    template: "home"
+  });
+
+  this.route("hello",{
+    path:'/hello',
+    template: "guestbook"
+  });
+
+  this.route("chatroom",{
+    path:'/chatroom/:cid',
+    template: "chatroomPage",
+    data:function(){
+
+      res = {
+        chatroomData:function(){
+          // return(this.params.cid)
+          return(Chatroom.findOne({_id:this.params.cid}))
+        }.bind(this)
+      }
+      return(res)
+    }
+
+
+  });
+
+
+
+})
+
+
 
 Message = new Mongo.Collection("message");
+Chatroom = new Mongo.Collection("chatroom");
 
 
 if (Meteor.isClient){
@@ -30,6 +71,27 @@ if (Meteor.isClient){
     }
   })
 
+  Template.home.helpers({
+    Chatrooms: function(){
+      return(Chatroom.find({},{sort:{createdAt:-1}}))
+    }
+  })
+
+
+  Template.home.events({
+    "change #createChatroom": function(e,t){
+      chaatroomName = $(e.target).val();
+
+      $("input").val("");
+      chatroomData = {
+        name:chaatroomName,
+      };
+
+      Meteor.call("createChatroom",chatroomData)
+
+    }
+  })
+
 
 }
 
@@ -41,6 +103,13 @@ if (Meteor.isServer){
     return(Message.find({},{sort:{createdAt:-1},limit:limitN}))
   })
 
+  Meteor.publish(null,function(){
+    // console.log(Meteor.userId()); // NOT WORK
+    // console.log(this.userId);
+    return(Chatroom.find({}))
+  })
+
+
   Meteor.methods({
     createMessage: function(msgData){
       usr = Meteor.userId()
@@ -51,7 +120,18 @@ if (Meteor.isServer){
         Message.insert(msgData);
 
       }
-    }
+    },
+
+    createChatroom: function(chatroomData){
+      usr = Meteor.userId()
+      if (usr){
+        chatroomData.userId = usr;
+        chatroomData.user = Meteor.user().profile.name;
+        chatroomData.createdAt = new Date;
+        Chatroom.insert(chatroomData);
+
+      }
+    },
   })
 }
 

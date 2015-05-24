@@ -32,6 +32,8 @@ if (Meteor.isClient){
 
 if (Meteor.isServer){
   Meteor.publish("pubMsgs",function(limitN){
+    // console.log(Meteor.userId()); // NOT WORK
+    // console.log(this.userId);
     return(Message.find({},{sort:{createdAt:-1},limit:limitN}))
   })
 

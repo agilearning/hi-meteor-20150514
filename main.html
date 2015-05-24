@@ -3,13 +3,16 @@
 </head>
 
 <body>
+  {{> guestbook}}
+</body>
+
+<template name="guestbook">
+  {{> loginButtons}}
   <hr>
-  <form>
-    User:<input id="inputUsr" />
-    <br>
+    <!-- User:<input id="inputUsr" /> -->
+    <!-- <br> -->
     <br>
     Message:<input id="inputMsg" />
-  </form>
   <hr>
 
   {{# each Msgs}}
@@ -18,7 +21,7 @@
 
   {{/each}}
 
-</body>
+</template>
 
 
 <template name="message">

@@ -2,28 +2,37 @@ Message = new Mongo.Collection("message");
 
 
 if (Meteor.isClient){
-  Template.body.helpers({
+  Template.guestbook.helpers({
     Msgs: function(){
       return(Message.find({},{sort:{createdAt:-1}}))
     }
   })
 
-  Template.body.events({
+  Template.guestbook.events({
     "change #inputMsg": function(e,t){
       msg = $(e.target).val();
-      usr = $("#inputUsr").val();
+      // usr = $("#inputUsr").val();
 
-      if (!usr){
-        usr = "Annonymous";
-      }
+      // if (!usr){
+      //   usr = "Annonymous";
+      // }
 
-      $("form > input").val("");
+
+      $("input").val("");
       msgData = {
         text:msg,
-        user:usr,
         createdAt: new Date,
       };
-      Message.insert(msgData);
+
+      usr = Meteor.userId()
+      if (usr){
+        msgData.userId = usr;
+        msgData.user = Meteor.user().profile.name;
+        Message.insert(msgData);
+
+      }
+
+      // Message.insert(msgData);
 
 
     }

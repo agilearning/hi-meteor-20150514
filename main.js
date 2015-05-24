@@ -14,7 +14,10 @@ if (Meteor.isClient){
 
 
   Template.body.helpers({
-    Msgs: sampleMesssages
+    Msgs: function(){
+      return(Message.find())
+    }
+    // Msgs: sampleMesssages
     // Msgs:[
     //   {n:1,text:"Hi!Meteor! (m1)"},
     //   {n:2,text:"Agilearning.IO is awesome! (m2)"},

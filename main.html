@@ -3,6 +3,10 @@
 </head>
 
 <body>
+  <hr>
+  Message:<input id="inputMsg" />
+  <hr>
+
   {{# each Msgs}}
 
     {{> message number=this.n text=this.text from=this.from}}

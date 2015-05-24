@@ -24,9 +24,12 @@
 </template>
 
 <template name="chatroomPage">
+  {{> loginButtons}}
   <!-- <h2>{{chatroomData}}</h2> -->
   <a href="{{pathFor 'index'}}">Home</a>
   {{> Template.dynamic template="chatroom" data=chatroomData}}
+
+  {{> guestbook}}
 </template>
 
 
@@ -45,12 +48,12 @@
 
     <p>created by {{user}}</p>
     <p>{{createdAt}}</p>
-    <p>{{_id}}</p>
+    <!--  <p>{{_id}}</p> -->
 <hr>
 </template>
 
 <template name="guestbook">
-  {{> loginButtons}}
+  <!-- {{> loginButtons}} -->
   <hr>
     <!-- User:<input id="inputUsr" /> -->
     <!-- <br> -->
@@ -60,7 +63,8 @@
 
   {{# each Msgs}}
 
-    {{> message number=this.n text=this.text from=this.from user=this.user}}
+    {{> Template.dynamic template="message" data=this}}
+
 
   {{/each}}
 
@@ -83,6 +87,8 @@
   {{# if from}}
     <p>from:{{from}}</p>
   {{/if}}
+
+  <p>{{chatroomId}}</p>
 
   <hr>
 </template>

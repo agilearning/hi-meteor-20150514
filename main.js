@@ -21,7 +21,9 @@ Router.map(function(){
 
   this.route("chatroom",{
     path:'/chatroom/:cid',
+
     template: "chatroomPage",
+
     data:function(){
 
       res = {
@@ -31,6 +33,10 @@ Router.map(function(){
         }.bind(this)
       }
       return(res)
+    },
+
+    waitOn: function(){
+      Meteor.subscribe("pubMsgsToChat",this.params.cid,10);
     }
 
 
@@ -47,9 +53,9 @@ Chatroom = new Mongo.Collection("chatroom");
 
 
 if (Meteor.isClient){
-  Meteor.startup(function(){
-    Meteor.subscribe("pubMsgs",20);
-  });
+  // Meteor.startup(function(){
+  //   Meteor.subscribe("pubMsgs",20);
+  // });
 
   Template.guestbook.helpers({
     Msgs: function(){
@@ -59,11 +65,14 @@ if (Meteor.isClient){
 
   Template.guestbook.events({
     "change #inputMsg": function(e,t){
+      cid = Router.current().params.cid
+
       msg = $(e.target).val();
 
       $("input").val("");
       msgData = {
         text:msg,
+        chatroomId: cid
       };
 
       Meteor.call("createMessage",msgData)
@@ -101,6 +110,12 @@ if (Meteor.isServer){
     // console.log(Meteor.userId()); // NOT WORK
     // console.log(this.userId);
     return(Message.find({},{sort:{createdAt:-1},limit:limitN}))
+  })
+
+  Meteor.publish("pubMsgsToChat",function(cid, limitN){
+    // console.log(Meteor.userId()); // NOT WORK
+    // console.log(this.userId);
+    return(Message.find({chatroomId:cid},{sort:{createdAt:-1},limit:limitN}))
   })
 
   Meteor.publish(null,function(){

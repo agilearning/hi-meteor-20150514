@@ -2,6 +2,10 @@ Message = new Mongo.Collection("message");
 
 
 if (Meteor.isClient){
+  Meteor.startup(function(){
+    Meteor.subscribe("pubMsgs")
+  });
+
   Template.guestbook.helpers({
     Msgs: function(){
       return(Message.find({},{sort:{createdAt:-1}}))
@@ -27,7 +31,7 @@ if (Meteor.isClient){
 
 
 if (Meteor.isServer){
-  Meteor.publish(null,function(){
+  Meteor.publish("pubMsgs",function(){
     return(Message.find({},{sort:{createdAt:-1},limit:10}))
   })
 

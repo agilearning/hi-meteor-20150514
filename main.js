@@ -11,9 +11,9 @@ if (Meteor.isClient){
   Template.body.helpers({
     testArray: _.range(0,10),
     Msgs:[
-      "Hi!Meteor! (m1)",
-      "Agilearning.IO is awesome! (m2)",
-      "Agilearning.IO is so nice! (m3)"
+      {n:1,text:"Hi!Meteor! (m1)"},
+      {n:2,text:"Agilearning.IO is awesome! (m2)"},
+      {n:3,text:"Agilearning.IO is so nice! (m3)"}
     ]
   })
 
